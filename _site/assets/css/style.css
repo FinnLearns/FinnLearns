@@ -1,0 +1,73 @@
+body {
+	background-color: #280137;
+	color: white;
+    }
+
+.fade-in-cards { animation: fadeIn 2s; }
+
+@keyframes fadeIn {
+    0% { opacity: 0; }          
+    100% { opacity: 1; }           
+}
+
+html { scroll-behavior: smooth; }
+
+nav { width: 100%; }
+
+hr {
+	border: 1px solid white;
+	opacity: 1.0;
+}
+
+h3 {
+	margin-top: 50px;
+	margin-bottom: 20px;
+}
+
+.back-to-top {
+	position: fixed;
+	bottom: 2rem;
+	right: 2rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #dc143d;
+	border-radius: 0.5rem;
+	padding: 0.5rem;
+	text-decoration: none;
+	transition: 0.2s ease-out;
+}
+
+.back-to-top span {
+	color: white;
+	font-size: 2rem;
+	transition: 0.2s ease-out;
+}
+
+.back-to-top:hover {
+	background-color: #be1a3b;
+}
+
+.back-to-top:hover span {
+	transform: translateY(-3px);
+}
+
+.navbar-toggle {
+    background-color: transparent;
+    background-image: none;
+    border: 1px solid transparent;
+}
+
+.navbar-toggle .icon-bar { background-color: white; }
+
+.container {
+    width: 100%;
+	overflow-wrap: break-word;
+}
+
+.latex-box {
+	width: 300px;
+	height: 100px;
+	text-align: center;
+	overflow: auto
+}

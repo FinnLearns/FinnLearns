@@ -1,0 +1,27 @@
+---
+title: Projects
+layout: default
+---
+
+<main>
+	<div class="fade-in-cards">
+		<h1 style="margin: 2%; font-size: 20;">{{page.title}}</h1>
+		<hr>
+	</div>
+	<div class="row fade-in-cards">
+		{% assign filtered_posts = site.posts | where: 'type','project' %}
+		{% for post in filtered_posts %}			
+			<div class="col-md-6">
+				<div class="card w-65 border-dark mb-4" style="background-color: #000033">
+					<img class="card-img-top" src="{{ post.image }}"
+						alt="Card Header">
+					<div class="card-body d-flex flex-column">
+						<h2 class="card-title text-white">{{ post.name }}</h2>
+						<bold class="card-subtitle text-white">{{ post.date | date_to_string}}</bold>																
+						<a href="{{ post.url }}" class="stretched-link"></a>
+					</div>
+				</div>
+			</div>
+		{% endfor %}		
+	</div>	
+</main>

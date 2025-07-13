@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>{{ page.title }}</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,
+		initial-scale=1, shrink-to-fit=no">
+	<meta name='keywords' content='{{ page.keywords }}'>
+	<meta name='author' content='Finn Murphy'>
+
+	{% include render.html %}
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg" style="background-color: #000033;">
+		<div class="container-fluid">
+	    	<a class="navbar-brand text-white" href="/">FinnLearns</a>
+	    	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+	    	aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	      		<span class="navbar-toggler-icon navbar-dark"></span>
+	    	</button>
+		    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+		    	<ul class="navbar-nav">
+		    		<li class="navbar-item active">
+						<a href="/projects.html" class="nav-link active text-white">Projects</a>
+					</li>	
+					<li class="navbar-item active">
+						<a href="/life.html" class="nav-link active text-white">Life</a>
+					</li>
+				</ul>
+				<ul class="navbar-nav ms-auto">
+					<li class="nav-item">
+						<a href="https://www.linkedin.com/in/finndustry/">
+							<img src="/assets/images/linkedinPic.png" width=50 height=50></a>
+					</li>
+					<li class="nav-item">
+						<a href="mailto:finndustryinc@gmail.com">
+							<img src="/assets/images/gmailPic.png" alt="Gmail" width=50 height=50></a>
+					</li>
+				</ul>
+		    </div>
+	  	</div>
+	</nav>
+	<div class="container">
+		{{ content }}
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/prism.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-python.min.js"></script>
+</body>
+</html>
