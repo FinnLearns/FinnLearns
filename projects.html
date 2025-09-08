@@ -13,7 +13,8 @@ layout: default
 		{% for post in filtered_posts %}			
 			<div class="col-md-6">
 				<div class="card w-65 border-dark mb-4" style="background-color: #000033">
-					<img class="card-img-top" src="{{ post.image }}"
+					<!-- FIX CARD SIZING ISSUE -->
+					<img class="card-img-top" src="{{ post.image }}"  height="400"
 						alt="Card Header">
 					<div class="card-body d-flex flex-column">
 						<h2 class="card-title text-white">{{ post.name }}</h2>

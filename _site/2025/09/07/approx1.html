@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>Approx1</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,
+		initial-scale=1, shrink-to-fit=no">
+	<meta name='keywords' content='linear algebra, matrix, math, engineering, computational math, programming, python, numpy, colab, functions, approximation,'>
+	<meta name='author' content='Finn Murphy'>
+
+	<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+
+<script src="mathjax-config.js" defer></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3
+/dist/css/bootstrap.min.css" rel="stylesheet" 
+integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
+crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/themes/prism.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/prism-atom-dark.css">	
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg" style="background-color: #000033;">
+		<div class="container-fluid">
+	    	<a class="navbar-brand text-white" href="/">FinnLearns</a>
+	    	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+	    	aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	      		<span class="navbar-toggler-icon navbar-dark"></span>
+	    	</button>
+		    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+		    	<ul class="navbar-nav">
+		    		<li class="navbar-item active">
+						<a href="/projects.html" class="nav-link active text-white">Projects</a>
+					</li>	
+					<li class="navbar-item active">
+						<a href="/life.html" class="nav-link active text-white">Life</a>
+					</li>
+				</ul>
+				<ul class="navbar-nav ms-auto">
+					<li class="nav-item">
+						<a href="https://www.linkedin.com/in/finndustry/">
+							<img src="/assets/images/linkedinPic.png" width=50 height=50></a>
+					</li>
+					<li class="nav-item">
+						<a href="mailto:finndustryinc@gmail.com">
+							<img src="/assets/images/gmailPic.png" alt="Gmail" width=50 height=50></a>
+					</li>
+				</ul>
+		    </div>
+	  	</div>
+	</nav>
+	<div class="container">
+		<div class="fade-in-cards">
+		<h1 style="margin: 2%; font-size: 20;">Approximating Functions</h1>
+        <hr>
+</div>
+
+<div class="fade-in-cards">	
+    <h3 id="introduction">Introduction</h3>
+
+<p>This fall semester I transferred from my community college in Kansas to the University of Colorado at Boulder to major in electrical engineering. One of my primary motivations for attending Boulder is the breadth of opportunities it offers in engineering, from clubs, classes, and research opportunities. So far I’ve not been disappointed respecting the latter, as at the start of the semester I had the good fortune to connect with Conor Rowan, a PhD candidate in the university’s Aerospace Department, who has generously agreed to mentor me in an area of his research related to using machine learning to find solutions to differential equations.</p>
+
+<p>This last week we discussed how exactly you can approximate functions with a basis composed of other functions. Eventually, the plan is to learn about using optimization/machine learning techniques to find solutions to differential equations, and then apply this knowledge to a (hopefully) novel problem. All of this will surely inspire future articles, so stay tuned…</p>
+
+<h3 id="motivation">Motivation</h3>
+
+<p>To start, let us think about some ideas in terms of linear algebra and then generalize our findings into the continuous realm. Imagine that we have some vector $\textbf{v} \in \mathbb{R}^3$ and we would like to approximate this vector with the vectors $\textbf{a}_ \textbf{1} \in \mathbb{R}^3$ and $\textbf{a}_\textbf{2} \in \mathbb{R}^3$. Essentially, we’re trying to find the best approximation of $v$ by spanning two basis vectors.</p>
+<p style="latex-box">
+$$
+\bar{\textbf{v}} = \theta_1\textbf{v} _\textbf{1}+ \theta_2\textbf{v} _\textbf{2}
+$$
+</p>
+<p>where $\theta_1$ and $\theta_2$ are parameters whose values we try to optimize for our approximation.</p>
+
+<p>Now we want a way to measure the error between our approximation and $v$. A way to do this is simply subtract the two vectors</p>
+<p style="latex-box">
+$$
+\textbf{e}=\textbf{v}-\bar{\textbf{v}}
+$$
+</p>
+<p>Furthermore, we can use this error vector to define a loss function</p>
+<p style="latex-box">
+$$
+L(\theta_1,\theta_2) = \frac{1}{2}\textbf{e} \cdot \textbf{e}
+$$
+</p>
+<p>which is the squared length of the error vector $\textbf{e}$. When trying to find the best approximation, it’d be natural to try and minimize our loss function, which we can do by taking the gradient of the loss function with respect to each parameter and setting equal to zero. This will look like the following expressions:</p>
+<p style="latex-box">
+$$
+\frac{\partial L}{\partial \theta_1} = (\theta_1 \textbf{f} _\textbf{1} + \theta_2 \textbf{f} _\textbf{2} - \textbf{v})\textbf{f} _\textbf{1} = \textbf{e} \cdot \textbf{f} _\textbf{1} = 0
+$$
+</p>
+<p style="latex-box">
+$$
+\frac{\partial L}{\partial \theta_2} = (\theta_1 \textbf{f} _\textbf{1} + \theta_2 \textbf{f} _\textbf{2} - \textbf{v})\textbf{f} _\textbf{2} = \textbf{e} \cdot \textbf{f} _\textbf{2} = 0
+$$
+</p>
+
+<p>The most important part of the these expressions to notice is that the dot product of the error vector and each of the basis vectors is 0, meaning the error has no component in the basis. Additionally, if we distribute the basis vectors that are outside of the parentheses in each of these equations and rearrange the term with $\textbf{v} \cdot \textbf{f} _\textbf{i}$ to the right side, hopefully it’s clear that we can represent these equations as the product of the matrix multiplication</p>
+<p style="latex-box">
+$$
+\begin{bmatrix} \textbf{f} _\textbf{1} \cdot \textbf{f} _\textbf{1} &amp; \textbf{f} _\textbf{1} \cdot \textbf{f} _\textbf{2} \\ \textbf{f} _\textbf{2} \cdot \textbf{f} _\textbf{1} &amp; \textbf{f} _\textbf{2} \cdot \textbf{f} _\textbf{2} \end{bmatrix} \begin{bmatrix} \theta_1 \\ \theta_2 \end{bmatrix} = \begin{bmatrix} \textbf{f} _\textbf{1} \\ \textbf{f} _\textbf{2} \end{bmatrix}
+$$
+</p>
+
+<p>Crucially, we’ve created an equations of the form</p>
+<p style="latex-box">
+$$
+\textbf{K} \boldsymbol{\theta}=\textbf{F}
+$$
+</p>
+<p>of which we can solve for $\boldsymbol{\theta}$ by multiplying each side by the inverse matrix of $\textbf{K}$, leaving us with the parameters that optimize our approximation!</p>
+
+<p>Now we can move into approximating continuous functions, but now instead of our basis being composed of vectors it will be composed of functions:</p>
+<p style="latex-box">
+$$
+e(x) = v(x) - \sum_{i=1}^{N} \theta_i f_i(x)
+$$
+</p>
+<p>where $e(x)$ is our error function, $v(x)$ is what we want to approximate, and each $f_i(x)$ is a function in our basis. We want to find the optimal parameters $\theta_i$, and to find them we proceed just as before, first defining a loss function</p>
+<p style="latex-box">
+$$
+L(\boldsymbol{\theta}) = \frac{1}{2}\int_{a}^{b} ((v(x) - \sum_{i=1}^{N} \theta_i f_i(x)) \ dx)^2
+$$
+</p>
+
+<p>Let’s find the gradient of the loss funtion with respect to each parameter. For $j=1,2,…,N$</p>
+<p style="latex-box">
+$$
+\frac{\partial L}{\partial \theta_j} = \int_{a}^{b} ((v(x) - \sum_{i=1}^{N} \theta_i f_i(x)) \frac{\partial}{\partial \theta_i} (v(x) - \sum_{i=1}^{N} \theta_i f_i(x))) \ dx
+$$
+</p>
+<p style="latex-box">
+$$
+= \int_{a}^{b} ((v(x) - \sum_{i=1}^{N} \theta_i f_i(x))v_j(x)) \ dx = 0
+$$
+</p>
+
+<p>We can see that our again that we’ve created a matrix of the same form above, where</p>
+<p style="latex-box">
+$$ 
+K_{ji} = \int_{a}^{b} f_j(x)f_i(x) \ dx
+$$
+</p>
+<p style="latex-box">
+$$
+F_j = \int_{a}^{b} v(x)f_j(x) \ dx
+$$
+</p>
+
+<p>Here $j$ denotes the row of the matrix and $i$ the column. So after solving for the vector of parameters, we have know which parameters optimally approximate a function for a given basis. To see this idea in action I’ve made a demonstration in Colab which you can find <a href="https://colab.research.google.com/drive/14mJ0r-okoqYZZvAF2JUS2Mt3entey1Eu?usp=sharing" title="Link to Colab code">here</a>.</p>
+
+<h3 id="computational-example">Computational Example</h3>
+<p>Let’s look at a simple implementation of the discussed method, where we’ll define a function we want to approximate, choose a collection of functions for our basis, and numerically perform the calculations.</p>
+
+<p>In our first block of code we define the domain over which we’ll be evluating our functions and the number of samples we wish to take across the domain. Note that the larger your domain, the more samples you’ll want to take. Finally, we’ll define the function we wish to approximate and the basis functions.</p>
+
+<pre><code class="language-py">domain = [0,10] # domain over which functions are evaluated
+samples = 1000 # number of points at which functions evaluated at
+f = '(np.exp(x) - x + np.sin(x))' # function we want to approximate
+v = ['(x**2)','(x**3)','(1)'] # functions in approximation basis
+N = len(v) # number of functions in basis
+</code></pre>
+
+<p>You’ll notice the perhaps strange looking syntax of storing our functions as strings. I’d never seen this syntax before, but I think it works really well for having fast and easy access to expressions without needing to repeatedly rewrite them or call them as functions. It works like this:</p>
+<pre><code class="language-py">eq = "x + 3"
+x = 3
+result = eval(eq)
+print(eq)
+</code></pre>
+<p>The print call will output <code class="language-plaintext highlighter-rouge">6</code> which is the obvious result of $x+3$. Basically, as long you’ve assigned a value to the variable in whose terms you wrote your equations, you can call <code class="language-plaintext highlighter-rouge">eval()</code> and it will plug in that value into the equation and return the result. Very cool! You’ll also want to wrap your expressions in parentheses so that we can multiply them today without any unintended consequences from the order of operations.</p>
+
+<p>In the next code block we create our matrices that correspond to the matrices of the same names we’ve discussed above. What’s perhaps the most confusing part is the embedded loops, but hopefully you can draw the connection them and the way we “looped” through the indeces in the equations above. For additional clarity, I’ve been consistent in math and code with how I’ve labeled the indeces, so the $j$ index in the code corresponds to how the $j$ index is used in the math, and same for $i$. In essence, this block just calls an integration function on the proper functions and stores the results in the right matrix entry.</p>
+<pre><code class="language-py">K = np.zeros((N,N)) # stiffness matrix
+F = np.zeros((N,1)) # force matrix
+for j in range(0,N):
+  integrand = f + "*" + v[j]
+  force = rectIntegration(integrand)
+  F[j,0] = force
+
+  for i in range(0,N):
+    integrand = v[i] + "*" + v[j]
+    stiff = rectIntegration(integrand)
+    K[j,i] = stiff
+</code></pre>
+
+<p>Next up we’ll cover the <code class="language-plaintext highlighter-rouge">rectIntegration()</code> function. To help it make sense, here’s an image from Paul’s Online Math Notes (<a href="https://tutorial.math.lamar.edu/classes/calcii/ApproximatingDefIntegrals.aspx" title="Image source">link</a>).</p>
+
+<p align="center">  
+    <img src="/assets/images/blog/approx1Illustration.png" width="50%" height="50%" />
+</p>
+
+<p>So in the code, we first find the spacing <code class="language-plaintext highlighter-rouge">h</code> between our samples, which corresponds to $x_i - x_{i-1}$ in the image. Next, we set the starting point to the first point in the domain plus h/2, so that we are in the middle of the first two samples. We also set up a list of points we’ll be iterating through so that we only evaluate our integrand at the midpoints of two sample points. Once we’re inside the loop, we evaluate the integrand (the height of the rectangle) and multiply it by <code class="language-plaintext highlighter-rouge">h</code> (the width of our rectangle), and we repeat this process so that we get an approximate area under the curve, which corresponds to the function’s integral.</p>
+<pre><code class="language-py"># numerical integration function
+def rectIntegration(integrand):
+  h = (domain[1]-domain[0]) / samples # width of rectangles
+  points = np.arange(domain[0]+h/2,domain[1],h) # evaluate middle point of rects
+  result = 0 # store integration result
+  for p in points:
+    x = p
+    result += (h * eval(integrand))
+    
+  return result
+</code></pre>
+
+<p>All that’s left to do is plot our results, and since that’s a nontechnical discussion I’ll leave us with this pretty graph:</p>
+<p align="center">  
+    <img src="/assets/images/blog/approx1Title.png" width="50%" height="50%" />
+</p>
+
+<p>If you want to see the difference in how an approximation performs with a different amount of basis functions or different types of basis functions make sure you play around with the Colab code!</p>
+
+
+    <a href="#" class="back-to-top">
+        <span class="material-icons">arrow_upward</span>
+    </a>
+</div>
+<div style="margin-top: 80px;">
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/prism.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-python.min.js"></script>
+</body>
+</html>
