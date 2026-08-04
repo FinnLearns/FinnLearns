@@ -8,6 +8,66 @@
 	<meta name='keywords' content='linear algebra, matrix, math, engineering, computational math, programming, python, numpy, colab, functions, approximation,'>
 	<meta name='author' content='Finn Murphy'>
 
+<!-- From Brevo -->
+	<style>
+	@font-face {
+		font-display: block;
+		font-family: Roboto;
+		src: url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/7529907e9eaf8ebb5220c5f9850e3811.woff2) format("woff2"), url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/25c678feafdc175a70922a116c9be3e7.woff) format("woff")
+	}
+
+	@font-face {
+		font-display: fallback;
+		font-family: Roboto;
+		font-weight: 600;
+		src: url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/6e9caeeafb1f3491be3e32744bc30440.woff2) format("woff2"), url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/71501f0d8d5aa95960f6475d5487d4c2.woff) format("woff")
+	}
+
+	@font-face {
+		font-display: fallback;
+		font-family: Roboto;
+		font-weight: 700;
+		src: url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/3ef7cf158f310cf752d5ad08cd0e7e60.woff2) format("woff2"), url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/ece3a1d82f18b60bcce0211725c476aa.woff) format("woff")
+	}
+
+	:where(.sib-form-message-panel) {
+		display: none;
+	}
+
+	:where(.sib-form-message-panel .sib-notification__icon) {
+		width: 20px;
+		height: 20px;
+	}
+
+
+	#sib-container input:-ms-input-placeholder {
+		font-family: Helvetica, sans-serif;
+		text-align: left;
+		color: #070707;
+	}
+
+	#sib-container input::placeholder {
+		font-family: Helvetica, sans-serif;
+		text-align: left;
+		color: #c0ccda;
+	}
+
+	#sib-container textarea::placeholder {
+		font-family: Helvetica, sans-serif;
+		text-align: left;
+		color: #090909;
+	}
+
+
+	#sib-container a {
+		text-decoration: underline;
+		color: #fc2b2b;
+	}
+	</style>
+	<link rel="stylesheet" href="https://sibforms.com/forms/end-form/build/sib-styles.css">	
+
+<!-- End Brevo -->
+
 	<script>
 MathJax = {
   tex: {
@@ -79,7 +139,7 @@ crossorigin="anonymous">
 
 <h3 id="motivation">Motivation</h3>
 
-<p>To start, let us think about some ideas in terms of linear algebra and then generalize our findings into the continuous realm. Imagine that we have some vector $\textbf{v} \in \mathbb{R}^3$ and we would like to approximate this vector with the vectors $\textbf{a}_ \textbf{1} \in \mathbb{R}^3$ and $\textbf{a}_\textbf{2} \in \mathbb{R}^3$. Essentially, we’re trying to find the best approximation of $v$ by spanning two basis vectors.</p>
+<p>To start, let us think about some ideas in terms of linear algebra and then generalize our findings into the continuous realm. Imagine that we have some vector $\textbf{v} \in \mathbb{R}^3$ and we would like to approximate this vector with the vectors $\textbf{v}_ \textbf{1} \in \mathbb{R}^3$ and $\textbf{v}_\textbf{2} \in \mathbb{R}^3$. Essentially, we’re trying to find the best approximation of $v$ by spanning two basis vectors.</p>
 <p style="latex-box">
 $$
 \bar{\textbf{v}} = \theta_1\textbf{v} _\textbf{1}+ \theta_2\textbf{v} _\textbf{2}
@@ -102,19 +162,19 @@ $$
 <p>which is the squared length of the error vector $\textbf{e}$. When trying to find the best approximation, it’d be natural to try and minimize our loss function, which we can do by taking the gradient of the loss function with respect to each parameter and setting equal to zero. This will look like the following expressions:</p>
 <p style="latex-box">
 $$
-\frac{\partial L}{\partial \theta_1} = (\theta_1 \textbf{f} _\textbf{1} + \theta_2 \textbf{f} _\textbf{2} - \textbf{v})\textbf{f} _\textbf{1} = \textbf{e} \cdot \textbf{f} _\textbf{1} = 0
+\frac{\partial L}{\partial \theta_1} = (\theta_1 \textbf{v} _\textbf{1} + \theta_2 \textbf{v} _\textbf{2} - \textbf{v})\textbf{v} _\textbf{1} = \textbf{e} \cdot \textbf{v} _\textbf{1} = 0
 $$
 </p>
 <p style="latex-box">
 $$
-\frac{\partial L}{\partial \theta_2} = (\theta_1 \textbf{f} _\textbf{1} + \theta_2 \textbf{f} _\textbf{2} - \textbf{v})\textbf{f} _\textbf{2} = \textbf{e} \cdot \textbf{f} _\textbf{2} = 0
+\frac{\partial L}{\partial \theta_2} = (\theta_1 \textbf{v} _\textbf{1} + \theta_2 \textbf{v} _\textbf{2} - \textbf{v})\textbf{f} _\textbf{2} = \textbf{e} \cdot \textbf{v} _\textbf{2} = 0
 $$
 </p>
 
-<p>The most important part of the these expressions to notice is that the dot product of the error vector and each of the basis vectors is 0, meaning the error has no component in the basis. Additionally, if we distribute the basis vectors that are outside of the parentheses in each of these equations and rearrange the term with $\textbf{v} \cdot \textbf{f} _\textbf{i}$ to the right side, hopefully it’s clear that we can represent these equations as the product of the matrix multiplication</p>
+<p>The most important part of the these expressions to notice is that the dot product of the error vector and each of the basis vectors is 0, meaning the error has no component in the basis. Additionally, if we distribute the basis vectors that are outside of the parentheses in each of these equations and rearrange the term with $\textbf{v} \cdot \textbf{v} _\textbf{i}$ to the right side, hopefully it’s clear that we can represent these equations as the product of the matrix multiplication</p>
 <p style="latex-box">
 $$
-\begin{bmatrix} \textbf{f} _\textbf{1} \cdot \textbf{f} _\textbf{1} &amp; \textbf{f} _\textbf{1} \cdot \textbf{f} _\textbf{2} \\ \textbf{f} _\textbf{2} \cdot \textbf{f} _\textbf{1} &amp; \textbf{f} _\textbf{2} \cdot \textbf{f} _\textbf{2} \end{bmatrix} \begin{bmatrix} \theta_1 \\ \theta_2 \end{bmatrix} = \begin{bmatrix} \textbf{f} _\textbf{1} \\ \textbf{f} _\textbf{2} \end{bmatrix}
+\begin{bmatrix} \textbf{v} _\textbf{1} \cdot \textbf{v} _\textbf{1} &amp; \textbf{v} _\textbf{1} \cdot \textbf{v} _\textbf{2} \\ \textbf{v} _\textbf{2} \cdot \textbf{v} _\textbf{1} &amp; \textbf{v} _\textbf{2} \cdot \textbf{v} _\textbf{2} \end{bmatrix} \begin{bmatrix} \theta_1 \\ \theta_2 \end{bmatrix} = \begin{bmatrix} \textbf{v} _\textbf{1} \\ \textbf{v} _\textbf{2} \end{bmatrix}
 $$
 </p>
 
@@ -236,5 +296,60 @@ def rectIntegration(integrand):
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/prism.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-python.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-cpp.min.js"></script>
+
+<!-- START - We recommend to place the below code in footer or bottom of your website html  -->
+<script>
+  window.REQUIRED_CODE_ERROR_MESSAGE = 'Please choose a country code';
+  window.LOCALE = 'en';
+
+
+
+
+  window.EMAIL_INVALID_MESSAGE = window.SMS_INVALID_MESSAGE = "The information provided is invalid. Please review the field format and try again.";
+
+
+
+
+
+  window.REQUIRED_ERROR_MESSAGE = "This field cannot be left blank. ";
+
+  window.GENERIC_INVALID_MESSAGE = "The information provided is invalid. Please review the field format and try again.";
+
+
+  window.INVALID_NUMBER = "The information provided is invalid. Please review the field format and try again.";
+
+
+
+
+  window.INVALID_DATE = "Please enter a valid date";
+
+
+
+  window.REQUIRED_MULTISELECT_MESSAGE = 'Please select at least 1 option';
+
+
+  window.translation = {
+    common: {
+      selectedList: '{quantity} list selected',
+      selectedLists: '{quantity} lists selected',
+      selectedOption: '{quantity} selected',
+      selectedOptions: '{quantity} selected',
+    }
+  };
+
+  var AUTOHIDE = Boolean(0);
+</script>
+
+
+
+<script defer src="https://sibforms.com/forms/end-form/build/main.js"></script>
+
+
+
+
+<!-- END - We recommend to place the above code in footer or bottom of your website html  -->
+
+
 </body>
 </html>

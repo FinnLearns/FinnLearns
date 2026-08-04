@@ -8,6 +8,66 @@
 	<meta name='keywords' content=''>
 	<meta name='author' content='Finn Murphy'>
 
+<!-- From Brevo -->
+	<style>
+	@font-face {
+		font-display: block;
+		font-family: Roboto;
+		src: url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/7529907e9eaf8ebb5220c5f9850e3811.woff2) format("woff2"), url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/25c678feafdc175a70922a116c9be3e7.woff) format("woff")
+	}
+
+	@font-face {
+		font-display: fallback;
+		font-family: Roboto;
+		font-weight: 600;
+		src: url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/6e9caeeafb1f3491be3e32744bc30440.woff2) format("woff2"), url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/71501f0d8d5aa95960f6475d5487d4c2.woff) format("woff")
+	}
+
+	@font-face {
+		font-display: fallback;
+		font-family: Roboto;
+		font-weight: 700;
+		src: url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/3ef7cf158f310cf752d5ad08cd0e7e60.woff2) format("woff2"), url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/ece3a1d82f18b60bcce0211725c476aa.woff) format("woff")
+	}
+
+	:where(.sib-form-message-panel) {
+		display: none;
+	}
+
+	:where(.sib-form-message-panel .sib-notification__icon) {
+		width: 20px;
+		height: 20px;
+	}
+
+
+	#sib-container input:-ms-input-placeholder {
+		font-family: Helvetica, sans-serif;
+		text-align: left;
+		color: #070707;
+	}
+
+	#sib-container input::placeholder {
+		font-family: Helvetica, sans-serif;
+		text-align: left;
+		color: #c0ccda;
+	}
+
+	#sib-container textarea::placeholder {
+		font-family: Helvetica, sans-serif;
+		text-align: left;
+		color: #090909;
+	}
+
+
+	#sib-container a {
+		text-decoration: underline;
+		color: #fc2b2b;
+	}
+	</style>
+	<link rel="stylesheet" href="https://sibforms.com/forms/end-form/build/sib-styles.css">	
+
+<!-- End Brevo -->
+
 	<script>
 MathJax = {
   tex: {
@@ -76,6 +136,19 @@ crossorigin="anonymous">
 			<div class="col-md-6">
 				<div class="card w-65 border-dark mb-4" style="background-color: #000033">
 					<!-- FIX CARD SIZING ISSUE -->
+					<img class="card-img-top" src="assets/images/blog/ising/isingTitlePic.jpg"  height="400"
+						alt="Card Header">
+					<div class="card-body d-flex flex-column">
+						<h2 class="card-title text-white">Simulating the Ising Model</h2>
+						<bold class="card-subtitle text-white">02 Nov 2025</bold>																
+						<a href="/2025/11/02/ising.html" class="stretched-link"></a>
+					</div>
+				</div>
+			</div>
+					
+			<div class="col-md-6">
+				<div class="card w-65 border-dark mb-4" style="background-color: #000033">
+					<!-- FIX CARD SIZING ISSUE -->
 					<img class="card-img-top" src="assets/images/blog/approx1Title.png"  height="400"
 						alt="Card Header">
 					<div class="card-body d-flex flex-column">
@@ -106,5 +179,60 @@ crossorigin="anonymous">
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/prism.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-python.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-cpp.min.js"></script>
+
+<!-- START - We recommend to place the below code in footer or bottom of your website html  -->
+<script>
+  window.REQUIRED_CODE_ERROR_MESSAGE = 'Please choose a country code';
+  window.LOCALE = 'en';
+
+
+
+
+  window.EMAIL_INVALID_MESSAGE = window.SMS_INVALID_MESSAGE = "The information provided is invalid. Please review the field format and try again.";
+
+
+
+
+
+  window.REQUIRED_ERROR_MESSAGE = "This field cannot be left blank. ";
+
+  window.GENERIC_INVALID_MESSAGE = "The information provided is invalid. Please review the field format and try again.";
+
+
+  window.INVALID_NUMBER = "The information provided is invalid. Please review the field format and try again.";
+
+
+
+
+  window.INVALID_DATE = "Please enter a valid date";
+
+
+
+  window.REQUIRED_MULTISELECT_MESSAGE = 'Please select at least 1 option';
+
+
+  window.translation = {
+    common: {
+      selectedList: '{quantity} list selected',
+      selectedLists: '{quantity} lists selected',
+      selectedOption: '{quantity} selected',
+      selectedOptions: '{quantity} selected',
+    }
+  };
+
+  var AUTOHIDE = Boolean(0);
+</script>
+
+
+
+<script defer src="https://sibforms.com/forms/end-form/build/main.js"></script>
+
+
+
+
+<!-- END - We recommend to place the above code in footer or bottom of your website html  -->
+
+
 </body>
 </html>

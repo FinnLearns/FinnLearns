@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>Ising</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,
+		initial-scale=1, shrink-to-fit=no">
+	<meta name='keywords' content='physics, math, ising model, statistical physics, simulation, c++, magnetism'>
+	<meta name='author' content='Finn Murphy'>
+
+<!-- From Brevo -->
+	<style>
+	@font-face {
+		font-display: block;
+		font-family: Roboto;
+		src: url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/7529907e9eaf8ebb5220c5f9850e3811.woff2) format("woff2"), url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/25c678feafdc175a70922a116c9be3e7.woff) format("woff")
+	}
+
+	@font-face {
+		font-display: fallback;
+		font-family: Roboto;
+		font-weight: 600;
+		src: url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/6e9caeeafb1f3491be3e32744bc30440.woff2) format("woff2"), url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/71501f0d8d5aa95960f6475d5487d4c2.woff) format("woff")
+	}
+
+	@font-face {
+		font-display: fallback;
+		font-family: Roboto;
+		font-weight: 700;
+		src: url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/3ef7cf158f310cf752d5ad08cd0e7e60.woff2) format("woff2"), url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/ece3a1d82f18b60bcce0211725c476aa.woff) format("woff")
+	}
+
+	:where(.sib-form-message-panel) {
+		display: none;
+	}
+
+	:where(.sib-form-message-panel .sib-notification__icon) {
+		width: 20px;
+		height: 20px;
+	}
+
+
+	#sib-container input:-ms-input-placeholder {
+		font-family: Helvetica, sans-serif;
+		text-align: left;
+		color: #070707;
+	}
+
+	#sib-container input::placeholder {
+		font-family: Helvetica, sans-serif;
+		text-align: left;
+		color: #c0ccda;
+	}
+
+	#sib-container textarea::placeholder {
+		font-family: Helvetica, sans-serif;
+		text-align: left;
+		color: #090909;
+	}
+
+
+	#sib-container a {
+		text-decoration: underline;
+		color: #fc2b2b;
+	}
+	</style>
+	<link rel="stylesheet" href="https://sibforms.com/forms/end-form/build/sib-styles.css">	
+
+<!-- End Brevo -->
+
+	<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+
+<script src="mathjax-config.js" defer></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3
+/dist/css/bootstrap.min.css" rel="stylesheet" 
+integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
+crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/themes/prism.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/prism-atom-dark.css">	
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg" style="background-color: #000033;">
+		<div class="container-fluid">
+	    	<a class="navbar-brand text-white" href="/">FinnLearns</a>
+	    	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+	    	aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	      		<span class="navbar-toggler-icon navbar-dark"></span>
+	    	</button>
+		    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+		    	<ul class="navbar-nav">
+		    		<li class="navbar-item active">
+						<a href="/projects.html" class="nav-link active text-white">Projects</a>
+					</li>	
+					<li class="navbar-item active">
+						<a href="/life.html" class="nav-link active text-white">Life</a>
+					</li>
+				</ul>
+				<ul class="navbar-nav ms-auto">
+					<li class="nav-item">
+						<a href="https://www.linkedin.com/in/finndustry/">
+							<img src="/assets/images/linkedinPic.png" width=50 height=50></a>
+					</li>
+					<li class="nav-item">
+						<a href="mailto:finndustryinc@gmail.com">
+							<img src="/assets/images/gmailPic.png" alt="Gmail" width=50 height=50></a>
+					</li>
+				</ul>
+		    </div>
+	  	</div>
+	</nav>
+	<div class="container">
+		<div class="fade-in-cards">
+		<h1 style="margin: 2%; font-size: 20;">Simulating the Ising Model</h1>
+        <hr>
+</div>
+
+<div class="fade-in-cards">	
+    <h3 id="introduction">Introduction</h3>
+<p>As part of the probability class I’m taking, I have the option to create a poster to present at the end of the semester. Naturally, the topic must incorporate some aspect of probability, and as I researched it more I became fascinated with the applciations of probability to statistical mechanics. Topics in statistical mechanics also seem to lend themselves well to being simulated computationally, which is another area of interest. All in all, for my topic I ended up choosing one of the most common introductory examples of statistical physics: the Ising Model.</p>
+
+<h3 id="physics">Physics</h3>
+<p>The Ising Model attributes magnetism in a material to individual magnetic moments on a lattice, each of which can either be spin-up (+1) or spin-down (-1). We can model the overall energy of the material as</p>
+<p style="latex-box">
+$$ 
+E = -\frac{J}{2} \sum_{i,j\in \Lambda} s_{i,j} (s_{i+1,j}+s_{i-1,j}+s_{i,j+1}+s_{i+1,j-1}) 
+$$
+</p>
+
+<p>We will be working with square lattices only of length $L$, so in the energy formula $\Lambda=L^2$ is the “volume” of the lattice, and each $s_{i,j}$ is a magnetic moment at $i^{th}, j^{th}$ position. Additionally, $J$ is the interaction strength of the spins (which could be a different value for each pair of moments), but for simplicity’s sake we will set it to 1 for all pairs of moments. Furthermore, the energy formula technically has the extra term $\sum_{i}h_i s_i$, where $h_i$ represents a magnetic field at each moment. Again, for the sake of simplicity, we will set this term to zero for every moment. All in all, at the heart of the formula is the fact that the energy of the lattice is the sum of every moment mulitplied by the sum its nearest neighbours. The one-half term handles overcounting that occurs since this equation looks at all possible combinations, not just the unique ones that we care about.</p>
+
+<p>A configuration of the lattice is an assignment of +1 or -1 to every moment of the lattice. Thus, for an $L$x$L$ lattice there are $2^{L^2}$ possible configurations. We represent a configuration as $c$ and the energy corresponding to $c$ as $E(c)$. We’re interested in observing phase transitions in the material using magnetization as an observable. This next part will feel like a lot of hand-waving (because there is on my part), but we can calculate an observable using the formula</p>
+<p style="latex-box">
+$$
+\langle M \rangle = \frac{1}{Z(\beta)} \sum_{c}O(c)exp[-\beta E(c)]
+$$
+</p>
+<p>$\beta = \frac{1}{k_B T}$, where $k_B$ is Boltzmann’s constant and $T$ is the temperature. Furthermore, in the preceding equation $Z(\beta) = \sum{c} exp[-\beta E(c)]$ is the canonical partition function. I myself am still figuring out why this equation is useful and how it is derived, but from what I understand it acts as a normalizing constant in the equation for the observable. The important aspect to note is that the equation for the observable sums across all possible configurations of the lattice, which we’ve already noted is $2^{L^2}$, a prohibitively large number for anything but the smallest of lattices. Therefore, we need a way to generate a smaller number of configurations that will give us a good approximation.</p>
+
+<h3 id="simulation">Simulation</h3>
+<p>Monte Carlo simulations is essentially just a name given to any algorithm that simulates a process via random sampling. Examples including modeling investment portfolio returns or the spread of disease. You can even approximate integrals using a Monte Carlo method:</p>
+<p style="latex-box">
+$$
+\int_{A}f(x)dx \approx \frac{1}{N} \sum_{i=1}^{N} f(x_i)
+$$
+</p>
+
+<p>First, we need to briefly describe what a Markov chain is: it’s basically a description of possible events in which the probability of the next event is only dependent on the current state. In other words, it is a memoryless process. In terms of simulating the Ising model, P(c \rightarrow c’) is the probability that we move from the current configuration $c$ to some configuration $c’$; note how it only depends on where we currently are in the process. If we do a memoryless random walk through the possible configurations, the Markov chain has the special property that the probability of being in configuration $c$ is \pi (c), the stationary distribution. Thus, we’ll construct a Markov chain with the stationary distribution $\pi(c) = exp(-\beta E(c))$.</p>
+
+<p>The Metropolis-Hastings Algorithm provides a way to accomplish just this. It’s a three step process:</p>
+
+<blockquote>
+  <ol>
+    <li>Start a configuration $c$</li>
+    <li>Propose a move to a new configuration $c’$ with probability $P(c \rightarrow c’)$</li>
+    <li>Accept the move to $c’$ with probability $\textbf{min}(1, \frac{\pi (c’)}{\pi (c)} \frac{P(c’ \rightarrow c)}{P(c \rightarrow c’)})$</li>
+  </ol>
+</blockquote>
+
+<p>In the Metropolis-Hastings Algorithm we we propose moves that are equiprobable both ways, $P(c \rightarrow c’) = P(c’ \rightarrow c)$. We accomplish this by changing one single spin of the existing configuration. I also find it helpful to think about the probability of moving to the new configuration in terms of energy. Because the transition probabilities are the same they simply reduce to 1, and we’ve seen already that $\pi(c’) = exp(-\beta E(c’))$ and $\pi(c) = exp(-\beta E(c))$. Thus, $\frac{\pi (c’)}{\pi (c)} =\frac{exp(-\beta E(c’))}{exp(-\beta E(c))} = exp(-\beta \delta E)$. If $E(c’) &lt; E(c) \rightarrow exp(-\beta \delta E) &gt; 1$. What this tells us is that if the proposed configuration is of lower energy than the current configuration, we unconditioanlly move to it, which makes physical sense as systems always try to move into states of lower energy in the absence of energy sources. If $\frac{\pi (c’)}{\pi (c)} &lt; 0$ we accept the move with probability $exp(- \beta \delta E)$, so that we’re sampling from the probability distribution of our configurations.</p>
+
+<p>Here, each $x_i$ is a uniformly distributed randomly chosen sample in the domain $A$, and as $N \rightarrow \infty$ the approximation converges to the actual solution. So the problem we’re trying to solve is how to best choose random configurations of the lattice that will give us a good approximation of the material’s behavior. Since each configuration of the lattice appears with probability $P(c) = exp(-\beta E(c))$ what we’d like to have is a way to generate configurations with such a probability.</p>
+
+<h3 id="implementation">Implementation</h3>
+<p>So what does it look like to computationally perform the Metropolis-Hastings algorithm? Well, I’ve written a mediocre C++ program to explore this question. Because the code is fairly complex (at least for me), the full code can be found <a href="https://github.com/FinnLearns/IsingModel/tree/main" title="Link to GitHub repository">here</a>, but I’ll just break down the interesting parts.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kt">double</span> <span class="n">b</span> <span class="o">=</span> <span class="n">betaLower</span><span class="p">;</span> <span class="n">b</span> <span class="o">&lt;=</span> <span class="n">betaUpper</span><span class="p">;</span> <span class="n">b</span><span class="o">+=</span> <span class="n">betaStep</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">magnetArray</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="n">myGen</span><span class="p">.</span><span class="n">setInitialConfig</span><span class="p">();</span>
+        
+    <span class="k">for</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="o">++</span><span class="n">n</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">magnet</span> <span class="o">=</span> <span class="n">myGen</span><span class="p">.</span><span class="n">getCurrMag</span><span class="p">();</span>
+        <span class="n">magnetArray</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">magnet</span><span class="p">);</span>
+        
+        <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="n">volume</span><span class="p">;</span> <span class="o">++</span><span class="n">l</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">rand1</span> <span class="o">=</span> <span class="n">engine</span><span class="p">()</span> <span class="o">%</span> <span class="n">volume</span><span class="p">;</span>
+            <span class="n">rand2</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">engine</span><span class="p">())</span> <span class="o">/</span> <span class="n">RAND_MAX</span><span class="p">;</span>
+            <span class="n">myGen</span><span class="p">.</span><span class="n">updateLattice</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">rand1</span><span class="p">,</span> <span class="n">rand2</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In this code we’re looping through a collection of $\beta$ values, effectively testing the lattice’s behavior at different temperatures. Before we begin sampling new configurations, we set our lattice to a cold start (every spin is either +1 or -1) using the line <code class="language-plaintext highlighter-rouge">myGen.setInitialConfig();</code> where <code class="language-plaintext highlighter-rouge">myGen</code> is an instance of the class <code class="language-plaintext highlighter-rouge">Ising</code> that contains methods for simulating and measuring the Ising model. We then enter the configuration loop, where for each $\beta$ value we sample 10,000 configurations, which is a number large enough for our generated configurations to be largely noncorrelated. At the beginning of each pass through the loop we also store the magnetization of the previous configuration:</p>
+<p style="latex-box">
+$$
+    M(c) = \frac{1}{L^2} \sum_{i,j \in \Lambda} s_{i,j}
+$$
+</p>
+
+<p>The method <code class="language-plaintext highlighter-rouge">updateLattice()</code> is then called:</p>
+<pre><code class="language-cpp">void Ising::updateLattice(double currentBeta, int rand1, double rand2)
+{
+    int oppositeSpin = -1 * latticeSpin[rand1];
+    
+    int neighbourSum = latticeSpin[neighbourArray[rand1][0]] + latticeSpin[neighbourArray[rand1][1]]
+                        + latticeSpin[neighbourArray[rand1][2]] + latticeSpin[neighbourArray[rand1][3]];
+                        
+    int deltaEnergy = latticeSpin[rand1] * neighbourSum * 2;
+
+    if (exp(-1 * deltaEnergy * currentBeta) &gt; rand2)
+    {
+        latticeSpin[rand1] = oppositeSpin;
+        currMag += 2 * oppositeSpin;
+    }
+}
+</code></pre>
+
+<p>We start by flipping a random spin of our lattice. We then need to calculate the energy difference between our current configuration and the proposed configuration. You could sum through all the magnetizations of both the original and proposed lattices and take their difference, but that would be extraordinarily time intensive. Instead, we remember that each new configuration changes the spin of only one moment, meaning the change is only local to that moment and its nearest neighbours. Thus we are able to derive the expression $\delta E = \frac{1}{2} s_{i,j} (s_{i+1,j} + s_{i-1,j} + s_{i,j+1} + s_{i,j-1})$, assuming the simplifications we made at the beginning. We then check if our acceptance conditions are met, and if it is we accept the move. Notice also that because the magnetization changes by only one spin we are able to keep a running tally of the magnetization of the material, instead of having to recompute the sum of the entire lattice every new configuration.</p>
+
+<p>It’s also worth noting how the lattice is stored. Instead of creating an $LxL$ array, we can store it in a one-dimensional array by using a super-index, where every $i^{th}, j^{th}$ moment is stored at the $I = i + Lj$ index. The lattice also implements periodic boundary conditions, meaning moments at the edges are treated as neighbours to moments at opposite edge. To make accessing neighbours easier, we implement the array <code class="language-plaintext highlighter-rouge">neighbourArray</code>, which is of dimensions $L^2 x 4$. The row indeces correspond to the super-index we’re at on our lattice, and the four “column” indeces correspond to the superindeces of the four nearest neighbours. That’s implemented at the beginning of the algorithm with this method:</p>
+<pre><code class="language-cpp">void Ising::findNeighbours()
+{
+    for (int superI = 0; superI &lt; L*L; superI++)
+    {
+        if (superI - 1 &gt;= 0) neighbourArray[superI][0] = superI - 1;
+        else neighbourArray[superI][0] = superI + (L-1);
+        
+        if (superI + L &lt; L*L) neighbourArray[superI][1] = superI + L;
+        else neighbourArray[superI][1] = superI - (L*(L-1));
+        
+        if (superI + 1 &lt; L*L) neighbourArray[superI][2] = superI + 1;
+        else neighbourArray[superI][2] = superI - (L-1);
+        
+        if (superI - L &gt;= 0) neighbourArray[superI][3] = superI - L;
+        else neighbourArray[superI][3] = superI + L*(L-1);
+    }
+}
+</code></pre>
+
+<p>Finally, after each pass through our configurations loop we output the magnetization of the lattice inside a file. Thus, for each $\beta$ value we will have a file with $N$ magnetizations corresponding to each of our $N$ proposed configurations.</p>
+
+<h3 id="measurements-and-results">Measurements and Results</h3>
+<p>An important preliminary to mention is that before we begin making measurements based on the magnetizations we recorded, we wait a certain number of steps so that our magnetization values settle around their equilibrium. If we don’t do this, our measurements will be off.</p>
+
+<p>We are interested in taking four particular measurements of our model:</p>
+<blockquote>
+  <ol>
+    <li>Mean magnetization: $m = \frac{1}{N} \sum_{n=1}^{N} M_n$ Basically we’re just taking the averages of the magnetizations produced by the Metropolis-Hastings algorithm at a certain temperature.</li>
+    <li>Susceptibility: $\chi = \mu_2 V$. This is a measure of the variance amongst our magnetization values.</li>
+    <li>Skewness: $B_3 = \frac{\mu_3}{(\mu_2)^\frac{3}{2}}$. At my level of understanding this measurement doesn’t mean much, but it essentially gives information about the symmetry of the distribution of the magnetizations.</li>
+    <li>Kurtosis: $B_4 = \frac{\mu_4}{(\mu_2)^2}$. Again, at my level of understanding I’m not able to gain much insight out of this measurement yet. It was mostly included for thoroughness.</li>
+  </ol>
+</blockquote>
+
+<p>In the measurement definitions each $\mu_k = \frac{1}{N} \sum_{n=1}^{N} (M_n - m)^k$ Measuring these in the code is fairly trivial, but what isn’t trivial is the results:</p>
+
+<p align="center">  
+    <img src="/assets/images/blog/ising/isingResults.png" width="50%" height="50%" />
+</p>
+
+<p>We see that there is a sudden transition occuring in $m$ close to $\beta = 0.45$ and a discontinuity in $\chi$ at around the same point. Even in the skewness and kurtosis plots we can see irregular behavior at this point. From the definition of the mean. Basically what we’re is seeing is that for $\beta &lt; ~0.45$ there is a roughly equal number of moments that are spin-up and spin-down. However, as we pass through $\beta = ~0.45$ the spin-up moments become dominant, until they near instantaneously are the primary spin amongst the lattice. Remember that we start the lattice at each $\beta$ in a cold start, which in the case of this particular graph was a cold start at spin-up, or +1. Also remember that $\beta$ is inversely proportional to temperature. Thus, what we’re seeing is that at high temperatures the moments equally distributed between spin-up and spin-down, but as temperature decreases we hit a <em>phase transition</em> where the moments hardly change from where they were set in the cold start. This also makes physical sense: moments can’t just change spins randomly because that requires energy. So as the temperature decreases, representing less energy in the form of heat available to the lattice, the moments primarily stay in their initial states.</p>
+
+<p>I’ve made a gif of the lattice’s simulated behavior around the phase transition. Notice how there are more spin-up moments on average. It’s also interesting to note how moments of a certain spin tend to coagulate around each other.</p>
+
+<p align="center">  
+    <img src="/assets/images/blog/ising/ising.gif" width="50%" height="50%" />
+</p>
+
+<h3 id="note-and-acknowledgement">Note and Acknowledgement</h3>
+<p>I should note that in I’ve been implicitly using unitless quantities during this discussion, where our unitless variables are $\hat{\beta} = J \beta$ and $\hat{E} = \frac{E}{J}$. But as we simplified $J$ to $1$, this detail wasn’t especially important. Also, I should acknowledge some resources I used to help me with the implementation of the code and my own understanding of simulating the Ising model. First is an <a href="https://itp.uni-frankfurt.de/~mwagner/teaching/C_WS19/projects/Ising_proj.pdf" title="Link to assignment">assignment</a> from Goethe University in Frankfurt, Germany, and the other being a <a href="https://courses.physics.illinois.edu/phys498cmp/sp2022/Ising/IsingModel.html" title="Link to resource">online resource</a> for a computational physics class at the University of Illinois Urbana Champaign, each of which has been respectively linked.</p>
+
+
+    <a href="#" class="back-to-top">
+        <span class="material-icons">arrow_upward</span>
+    </a>
+</div>
+<div style="margin-top: 80px;">
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/prism.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-python.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-cpp.min.js"></script>
+
+<!-- START - We recommend to place the below code in footer or bottom of your website html  -->
+<script>
+  window.REQUIRED_CODE_ERROR_MESSAGE = 'Please choose a country code';
+  window.LOCALE = 'en';
+
+
+
+
+  window.EMAIL_INVALID_MESSAGE = window.SMS_INVALID_MESSAGE = "The information provided is invalid. Please review the field format and try again.";
+
+
+
+
+
+  window.REQUIRED_ERROR_MESSAGE = "This field cannot be left blank. ";
+
+  window.GENERIC_INVALID_MESSAGE = "The information provided is invalid. Please review the field format and try again.";
+
+
+  window.INVALID_NUMBER = "The information provided is invalid. Please review the field format and try again.";
+
+
+
+
+  window.INVALID_DATE = "Please enter a valid date";
+
+
+
+  window.REQUIRED_MULTISELECT_MESSAGE = 'Please select at least 1 option';
+
+
+  window.translation = {
+    common: {
+      selectedList: '{quantity} list selected',
+      selectedLists: '{quantity} lists selected',
+      selectedOption: '{quantity} selected',
+      selectedOptions: '{quantity} selected',
+    }
+  };
+
+  var AUTOHIDE = Boolean(0);
+</script>
+
+
+
+<script defer src="https://sibforms.com/forms/end-form/build/main.js"></script>
+
+
+
+
+<!-- END - We recommend to place the above code in footer or bottom of your website html  -->
+
+
+</body>
+</html>
