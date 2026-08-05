@@ -1,6 +1,5 @@
 plugins:
   - jekyll-feed
-  - mathjax
 
 url: "https://finnlearns.fyi"
 baseurl: ""
