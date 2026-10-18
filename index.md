@@ -106,7 +106,7 @@ Below are a few other personal achievements and fun-facts:
 
 **Statement on AI Usage**
 
-Anyone who is visiting this site is likely to keep somewhat abreast on the current situation with the proliferation of large language models (LLMs) in STEM. As this website is meant to showcase my projects, thoughts, and ideas, in the interest of transparency I believe it is vital to address how I use AI to augment this process and how you can expect AI to have contributed to the content on this sight.
+Anyone who is visiting this site is likely to keep somewhat abreast on the current situation with the proliferation of large language models (LLMs) in STEM. As this website is meant to showcase my projects, thoughts, and ideas, in the interest of transparency I believe it is vital to address how I use AI to augment this process and how you can expect AI to have contributed to the content on this site.
 
 First, my philosophy on AI adoption: it is here, it always will be, and it is therefore of utmost importance to set clear personal boundaries for the tasks in which you're comfortable allowing AI usage. As the last year has shown, these boundaries must be fluid as the pace of technological development has taken all but the most hopeful optimists by surprise. Currently, I've personally set a clear boundary *against* using AI as a writing tool. Perhaps it's because my education heavily emphasized writing, or because I naively view writing as something intrinsically human and reflective of the individual, but I've never felt the need nor the urge to adopt AI usage for penmanship. You can therefore expect every word on this site to have been personally typed by yours truly. 
 
